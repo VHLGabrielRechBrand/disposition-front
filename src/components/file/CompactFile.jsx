@@ -1,6 +1,7 @@
 // CompactFile.jsx
 import React from 'react'
 import './CompactFile.css'
+import {FaArrowPointer, FaX} from "react-icons/fa6";
 
 function formatBytes(bytes) {
     if (bytes === 0) return '0 B'
@@ -10,22 +11,25 @@ function formatBytes(bytes) {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-export default function CompactFile({ file, onRemove }) {
+export default function CompactFile({ file, onAccess, onRemove }) {
     return (
         <div className="compact-file__container">
             <div className="compact-file__info">
                 <span className="compact-file__name">{file.name}</span>
                 <span className="compact-file__size">{formatBytes(file.size)}</span>
             </div>
-            {onRemove && (
-                <button
-                    type="button"
-                    className="compact-file__remove-btn"
-                    onClick={() => onRemove(file)}
-                >
-                    ×
-                </button>
-            )}
+            <div className="buttons">
+                {onAccess && (
+                    <button type="button" onClick={() => onAccess(file)}>
+                        <FaArrowPointer/>
+                    </button>
+                )}
+                {onRemove && (
+                    <button type="button" onClick={() => onRemove(file)}>
+                        <FaX/>
+                    </button>
+                )}
+            </div>
         </div>
     )
 }

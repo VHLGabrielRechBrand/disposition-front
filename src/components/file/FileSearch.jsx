@@ -1,9 +1,10 @@
-// components/FileSearch.jsx
-import React, {useEffect, useState} from 'react'
+import './FileSearch.css'
+import React, { useEffect, useState } from 'react'
 import CompactFileGrid from './CompactFileGrid.jsx'
 import useCollections from '../../hooks/useCollections.js'
 import useDocuments from '../../hooks/useDocuments.js'
-import {deleteDocument} from '../../service/FileService.js'
+import { deleteDocument } from '../../service/FileService.js'
+import { formatCollectionName } from '../../utils/utils.js'  // Importando a função de utilidades
 
 export default function FileSearch() {
     const { collections, selectedCollection, setSelectedCollection } = useCollections()
@@ -13,6 +14,10 @@ export default function FileSearch() {
     useEffect(() => {
         setDocuments(docs)
     }, [docs])
+
+    const handleClick = (file) => {
+
+    }
 
     const handleRemove = (fileToRemove) => {
         const updatedDocuments = documents.filter(doc => doc.id !== fileToRemove.id)
@@ -29,7 +34,8 @@ export default function FileSearch() {
 
     return (
         <div className="file-search">
-            <label htmlFor="collection-select">Select collection:</label>
+            <h1>Search</h1>
+            <label htmlFor="collection-select">Collection:</label>
             <select
                 id="collection-select"
                 value={selectedCollection}
@@ -37,7 +43,9 @@ export default function FileSearch() {
             >
                 {collections.length > 0 ? (
                     collections.map(name => (
-                        <option key={name} value={name}>{name}</option>
+                        <option key={name} value={name}>
+                            {formatCollectionName(name)} {}
+                        </option>
                     ))
                 ) : (
                     <option disabled>No collections available</option>
@@ -46,6 +54,7 @@ export default function FileSearch() {
 
             <CompactFileGrid
                 documents={documents}
+                onAccess={handleClick}
                 onRemove={handleRemove}
             />
         </div>

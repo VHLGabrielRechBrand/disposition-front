@@ -7,11 +7,35 @@ export default function FileScan() {
     const [scanResult, setScanResult] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [dragActive, setDragActive] = useState(false)
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0])
         setScanResult(null)
         setError('')
+    }
+
+    const handleDrop = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setDragActive(false)
+
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            setFile(e.dataTransfer.files[0])
+            setScanResult(null)
+            setError('')
+        }
+    }
+
+    const handleDrag = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        if (e.type === 'dragenter' || e.type === 'dragover') {
+            setDragActive(true)
+        } else if (e.type === 'dragleave') {
+            setDragActive(false)
+        }
     }
 
     const handleScan = async () => {
@@ -28,8 +52,17 @@ export default function FileScan() {
     }
 
     return (
-        <div className="file-scan">
+        <div
+            className={`file-scan ${dragActive ? 'drag-active' : ''}`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+        >
+            {dragActive && <div className="drag-overlay">📁 Drop file here to scan</div>}
+
             <input type="file" onChange={handleFileChange} />
+
             <button onClick={handleScan} disabled={!file || loading}>
                 {loading ? 'Scanning...' : 'Scan File'}
             </button>
