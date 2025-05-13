@@ -1,5 +1,5 @@
 import React from 'react'
-import CompactFile from './CompactFile'
+import CompactFile from './CompactFile.jsx'
 import './CompactFileGrid.css'
 
 export default function CompactFileGrid({ documents, onRemove }) {

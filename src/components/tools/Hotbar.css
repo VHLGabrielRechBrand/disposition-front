@@ -1,0 +1,92 @@
+.hotbar {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+}
+
+.hotbar-toggle {
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1a1a1a !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.hotbar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+}
+
+.hotbar-actions .action {
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #ffffff;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.hotbar-actions {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.hotbar-actions .action {
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #ffffff;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Hotbar aberta: ativa os botões */
+.hotbar-actions.open {
+    pointer-events: all;
+}
+
+.hotbar-actions.open .action {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animação em cascata */
+.hotbar-actions .action:nth-child(1) {
+    transition-delay: 0.05s;
+}
+.hotbar-actions .action:nth-child(2) {
+    transition-delay: 0.10s;
+}
+.hotbar-actions .action:nth-child(3) {
+    transition-delay: 0.15s;
+}

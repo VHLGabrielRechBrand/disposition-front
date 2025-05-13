@@ -1,0 +1,27 @@
+.file-scan {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-width: 400px;
+}
+
+.file-scan input {
+    padding: 4px;
+}
+
+.file-scan button {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.file-scan .error {
+    color: red;
+}
+
+.file-scan .scan-result {
+    padding: 8px;
+    border-radius: 4px;
+}
