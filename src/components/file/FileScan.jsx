@@ -4,6 +4,7 @@ import './FileScan.css'
 
 export default function FileScan() {
     const [file, setFile] = useState(null)
+    const [prompt, setPrompt] = useState('')
     const [scanResult, setScanResult] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -11,6 +12,12 @@ export default function FileScan() {
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0])
+        setScanResult(null)
+        setError('')
+    }
+
+    const handlePromptChange = (e) => {
+        setPrompt(e.target.value)
         setScanResult(null)
         setError('')
     }
@@ -42,7 +49,7 @@ export default function FileScan() {
         if (!file) return
         setLoading(true)
         try {
-            const result = await scanFile(file)
+            const result = await scanFile(file, prompt)
             setScanResult(result)
         } catch (err) {
             setError(err.message)
@@ -62,6 +69,14 @@ export default function FileScan() {
             {dragActive && <div className="drag-overlay">📁 Drop file here to scan</div>}
 
             <input type="file" onChange={handleFileChange} />
+
+            <textarea
+                placeholder="Enter the prompt to guide the OCR/AI extraction..."
+                value={prompt}
+                onChange={handlePromptChange}
+                rows={4}
+                style={{ resize: 'vertical', marginTop: '8px', padding: '8px' }}
+            />
 
             <button onClick={handleScan} disabled={!file || loading}>
                 {loading ? 'Scanning...' : 'Scan File'}

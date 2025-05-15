@@ -5,7 +5,7 @@ import useCollections from '../../hooks/useCollections.js'
 import useDocuments from '../../hooks/useDocuments.js'
 import { deleteDocument } from '../../service/FileService.js'
 import { formatCollectionName } from '../../utils/utils.js'
-import FileDetails from "./FileDetails.jsx";  // Importando a função de utilidades
+import FileDetails from "./FileDetails.jsx";
 
 export default function FileSearch() {
     const { collections, selectedCollection, setSelectedCollection } = useCollections()
@@ -16,6 +16,11 @@ export default function FileSearch() {
     useEffect(() => {
         setDocuments(docs)
     }, [docs])
+
+    useEffect(() => {
+        setSelectedFile(null);
+    }, [selectedCollection]);
+
 
     const handleClick = (file) => {
         setSelectedFile(file)
@@ -37,7 +42,6 @@ export default function FileSearch() {
     return (
         <div className="file-search">
             <h1>Search</h1>
-            <label htmlFor="collection-select">Collection:</label>
             <select
                 id="collection-select"
                 value={selectedCollection}

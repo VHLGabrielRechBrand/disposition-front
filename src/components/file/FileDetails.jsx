@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getDocumentById } from "../../service/FileService";
-import "./FileDetails.css"; // importe seu CSS aqui
+import "./FileDetails.css";
 
 export default function FileDetails({ collection, id }) {
     const [file, setFile] = useState(null);

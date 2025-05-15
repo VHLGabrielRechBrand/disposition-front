@@ -1,32 +1,16 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+import { apiFetch } from './BaseService.js';
 
 /**
- * Wrapper around fetch that prefixes the base URL and handles JSON responses
- * @param {string} path - endpoint path (e.g. '/scan-file')
- * @param {object} options - fetch options
- * @returns {Promise<any>}
+ * Scan a file via POST /scan-file with optional prompt to guide OCR/IA
+ * @param {File} file - File to scan
+ * @param {string} [prompt] - Optional prompt to guide extraction
  */
-async function apiFetch(path, options = {}) {
-    const url = `${API_BASE_URL}${path}`;
-    const response = await fetch(url, options);
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Request failed ${response.status}: ${errorText}`);
-    }
-    // Attempt to parse JSON, otherwise return raw response
-    const contentType = response.headers.get('Content-Type') || '';
-    if (contentType.includes('application/json')) {
-        return response.json();
-    }
-    return response;
-}
-
-/**
- * Scan a file via POST /scan-file
- */
-export async function scanFile(file) {
+export async function scanFile(file, prompt = '') {
     const formData = new FormData();
     formData.append('file', file);
+    if (prompt) {
+        formData.append('prompt', prompt);
+    }
     return apiFetch('/scan-file', { method: 'POST', body: formData });
 }
 
@@ -65,8 +49,8 @@ export function deleteDocument(collectionName, documentId) {
 /**
  * Example: scan file then reload collections and docs
  */
-export async function scanAndRefresh(file, collectionName) {
-    const scanResult = await scanFile(file);
+export async function scanAndRefresh(file, collectionName, prompt = '') {
+    const scanResult = await scanFile(file, prompt);
     const collections = await listCollections();
     const documents = await listDocuments(collectionName);
     return { scanResult, collections, documents };
