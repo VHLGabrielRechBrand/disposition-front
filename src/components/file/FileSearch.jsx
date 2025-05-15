@@ -4,19 +4,21 @@ import CompactFileGrid from './CompactFileGrid.jsx'
 import useCollections from '../../hooks/useCollections.js'
 import useDocuments from '../../hooks/useDocuments.js'
 import { deleteDocument } from '../../service/FileService.js'
-import { formatCollectionName } from '../../utils/utils.js'  // Importando a função de utilidades
+import { formatCollectionName } from '../../utils/utils.js'
+import FileDetails from "./FileDetails.jsx";  // Importando a função de utilidades
 
 export default function FileSearch() {
     const { collections, selectedCollection, setSelectedCollection } = useCollections()
     const docs = useDocuments(selectedCollection)
     const [documents, setDocuments] = useState([])
+    const [selectedFile, setSelectedFile] = useState(null)
 
     useEffect(() => {
         setDocuments(docs)
     }, [docs])
 
     const handleClick = (file) => {
-
+        setSelectedFile(file)
     }
 
     const handleRemove = (fileToRemove) => {
@@ -39,8 +41,7 @@ export default function FileSearch() {
             <select
                 id="collection-select"
                 value={selectedCollection}
-                onChange={e => setSelectedCollection(e.target.value)}
-            >
+                onChange={e => setSelectedCollection(e.target.value)}>
                 {collections.length > 0 ? (
                     collections.map(name => (
                         <option key={name} value={name}>
@@ -52,11 +53,15 @@ export default function FileSearch() {
                 )}
             </select>
 
-            <CompactFileGrid
-                documents={documents}
-                onAccess={handleClick}
-                onRemove={handleRemove}
-            />
+            {selectedFile ? (
+                <FileDetails collection={selectedCollection} id={selectedFile.id} />
+            ) : (
+                <CompactFileGrid
+                    documents={documents}
+                    onAccess={handleClick}
+                    onRemove={handleRemove}
+                />
+            )}
         </div>
     )
 }

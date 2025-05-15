@@ -40,7 +40,6 @@
 
 .file-scan .scan-result {
     padding: 16px;
-    background-color: #f4f4f4;
     border-radius: 4px;
     overflow-x: auto;
     max-height: 300px;

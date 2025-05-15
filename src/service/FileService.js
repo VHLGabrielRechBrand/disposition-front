@@ -44,6 +44,17 @@ export function listDocuments(collectionName) {
 }
 
 /**
+ * Get a document from a collection via GET /collection/{collection_name}/{document_id}
+ * @param {string} collectionName - The name of the collection
+ * @param {string} documentId - The ID of the document
+ * @returns {Promise<object>} - The document data
+ */
+export function getDocumentById(collectionName, documentId) {
+    const path = `/collection/${encodeURIComponent(collectionName)}/${encodeURIComponent(documentId)}`;
+    return apiFetch(path);
+}
+
+/**
  * Delete a document via DELETE /collection/{collection_name}/{document_id}
  */
 export function deleteDocument(collectionName, documentId) {

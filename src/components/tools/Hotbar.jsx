@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaSearch, FaUpload, FaCog } from 'react-icons/fa'
+import {FaSearch, FaUpload, FaCog, FaBook} from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import './Hotbar.css'
 
@@ -50,8 +50,10 @@ export default function Hotbar() {
                     <FaCog />
                 </button>
                 <div className={`hotbar-actions ${open ? 'open' : ''}`}>
-                    <div className="action" onClick={() => { navigate('/search'); closeHotbar(); }}><FaSearch /></div>
+                    <div className="action" onClick={() => { navigate('/settings'); closeHotbar(); }}><FaCog /></div>
+                    <div className="action" onClick={() => { navigate('/search'); closeHotbar(); }}><FaBook /></div>
                     <div className="action" onClick={() => { navigate('/scan'); closeHotbar(); }}><FaUpload /></div>
+                    <div className="action" onClick={() => { navigate('/'); closeHotbar(); }}><FaSearch /></div>
                 </div>
             </div>
         </>
