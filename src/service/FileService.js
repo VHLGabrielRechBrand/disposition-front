@@ -47,6 +47,28 @@ export function deleteDocument(collectionName, documentId) {
 }
 
 /**
+ * Adds a tag to a document in the specified collection
+ * @param {string} collection
+ * @param {string} documentId
+ * @param {string[]} tags
+ * @returns {Promise<object>}
+ */
+export function tagDocument(collection, documentId, tags) {
+    const path = `/collection/${encodeURIComponent(collection)}/${encodeURIComponent(documentId)}/tags`;
+
+    const payload = Array.isArray(tags) ? tags : [tags];
+
+    return apiFetch(path, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tags: payload }),
+    });
+}
+
+
+/**
  * Example: scan file then reload collections and docs
  */
 export async function scanAndRefresh(file, collectionName, prompt = '') {

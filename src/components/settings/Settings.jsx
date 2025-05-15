@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getAvailableModels, setOpenAIModel } from "../../service/ConfigurationService";
+import { useAuth } from "../../hooks/useAuth.jsx";
 
-export default function Settings({}) {
-    const [userId, setUserId] = useState("Gabriel");
+export default function Settings() {
+    const { user } = useAuth();
+    const userId = user?.sub || "";
     const [models, setModels] = useState([]);
     const [selectedModel, setSelectedModel] = useState("");
     const [loadingModels, setLoadingModels] = useState(true);
@@ -22,6 +24,10 @@ export default function Settings({}) {
     const handleSave = async () => {
         if (!selectedModel) {
             setMessage("Please select a model before saving.");
+            return;
+        }
+        if (!userId) {
+            setMessage("User not authenticated.");
             return;
         }
         setSaving(true);

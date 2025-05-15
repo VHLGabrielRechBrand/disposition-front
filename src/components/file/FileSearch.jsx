@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CompactFileGrid from './CompactFileGrid.jsx'
 import useCollections from '../../hooks/useCollections.js'
 import useDocuments from '../../hooks/useDocuments.js'
-import { deleteDocument } from '../../service/FileService.js'
+import { deleteDocument, tagDocument } from '../../service/FileService.js';
 import { formatCollectionName } from '../../utils/utils.js'
 import FileDetails from "./FileDetails.jsx";
 
@@ -21,6 +21,18 @@ export default function FileSearch() {
         setSelectedFile(null);
     }, [selectedCollection]);
 
+    const handleTag = (file) => {
+        const tag = prompt(`Enter a tag for "${file.name}"`);
+        if (tag && tag.trim()) {
+            tagDocument(selectedCollection, file.id, tag.trim())
+                .then(() => {
+                    console.log(`Tag "${tag}" added to ${file.name}`);
+                })
+                .catch((err) => {
+                    console.error(`Error tagging file ${file.name}:`, err);
+                });
+        }
+    };
 
     const handleClick = (file) => {
         setSelectedFile(file)
@@ -64,6 +76,7 @@ export default function FileSearch() {
                     documents={documents}
                     onAccess={handleClick}
                     onRemove={handleRemove}
+                    onTag={handleTag}
                 />
             )}
         </div>

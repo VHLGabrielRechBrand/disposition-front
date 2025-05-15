@@ -20,13 +20,13 @@ export default function LoginPage() {
         });
         google.accounts.id.renderButton(
             document.getElementById("google-signin-button"),
-            { theme: "outline", size: "large" }
+            { theme: "outline", size: "large", width: 500 }
         );
     }, []);
 
     return (
         <div className="login-page">
-            <h2>Please log in to continue</h2>
+            <img src="../../public/disposition.png" alt="Logo" style={{ width: 200, height: 200 }} />
             <div id="google-signin-button"></div>
         </div>
     );

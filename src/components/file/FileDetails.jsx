@@ -19,9 +19,24 @@ export default function FileDetails({ collection, id }) {
                     <div className="field-label">{key}:</div>
                     <ul className="field-value">
                         {value.map((item, index) => (
-                            <li key={index}>{item}</li>
+                            // Se o item for objeto, renderize JSON como string (exemplo simples)
+                            <li key={index}>
+                                {typeof item === 'object' ? JSON.stringify(item, null, 2) : item}
+                            </li>
                         ))}
                     </ul>
+                </div>
+            );
+        } else if (typeof value === 'object' && value !== null) {
+            // Se for objeto, renderiza suas chaves e valores recursivamente
+            return (
+                <div key={key} className="info-block nested-object">
+                    <div className="field-label">{key}:</div>
+                    <div className="field-value" style={{ paddingLeft: 16 }}>
+                        {Object.entries(value).map(([subKey, subValue]) =>
+                            renderField(subKey, subValue)
+                        )}
+                    </div>
                 </div>
             );
         }

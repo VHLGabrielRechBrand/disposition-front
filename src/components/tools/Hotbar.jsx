@@ -53,7 +53,6 @@ export default function Hotbar() {
                     <div className="action" onClick={() => { navigate('/settings'); closeHotbar(); }}><FaCog /></div>
                     <div className="action" onClick={() => { navigate('/search'); closeHotbar(); }}><FaBook /></div>
                     <div className="action" onClick={() => { navigate('/scan'); closeHotbar(); }}><FaUpload /></div>
-                    <div className="action" onClick={() => { navigate('/'); closeHotbar(); }}><FaSearch /></div>
                 </div>
             </div>
         </>
