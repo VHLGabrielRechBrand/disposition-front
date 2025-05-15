@@ -2,12 +2,13 @@
     display: flex;
     align-items: center;
     padding: 4px 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid var(--color-accent);
     margin-bottom: 4px;
-    max-width: 300px;
     justify-content: space-between;
     transition: all 0.2s ease;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+    border-radius: 6px;
 }
 
 .compact-file__info {
@@ -26,7 +27,7 @@
 
 .compact-file__size {
     font-size: 0.75rem;
-    color: #666;
+    color: var(--color-secondary);
 }
 
 .compact-file__remove-btn {
@@ -36,13 +37,19 @@
     font-size: 1.2rem;
     line-height: 1;
     padding: 0 4px;
-    color: #999;
+    color: var(--color-accent);
+    transition: color 0.2s ease;
+}
+
+.compact-file__remove-btn:hover {
+    color: var(--color-primary);
 }
 
 .compact-file__container:hover {
     transform: scale(1.03);
-    border-color: #646cff;
+    border-color: var(--color-primary);
     cursor: pointer;
+    background-color: #2a2a3a;
 }
 
 .buttons {
@@ -57,14 +64,15 @@
     font-size: 0.9rem;
     line-height: 1;
     padding: 2px 6px;
-    color: #666;
+    color: var(--color-secondary);
     transition: color 0.2s ease;
 }
 
 .buttons button:hover {
-    color: purple;
+    color: var(--color-primary);
 }
+
 .buttons button:disabled {
-    color: #ccc;
+    color: #77777788;
     cursor: not-allowed;
 }

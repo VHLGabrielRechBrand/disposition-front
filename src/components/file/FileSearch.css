@@ -1,37 +1,96 @@
 .file-search {
+    display: flex;
+    gap: 24px;
     padding: 80px 24px 24px 24px;
-    max-width: 1000px;
-    margin: 0 auto;
-    font-family: sans-serif;
-    position: relative;
-}
-
-.file-search h1 {
-    position: fixed;
-    top: 16px;
-    left: 16px;
+    /* removendo max-width para ocupar toda a tela */
+    width: 100vw;
+    height: calc(100vh - 80px);
+    color: var(--color-text-light);
+    /* removendo margin auto para não centralizar */
     margin: 0;
-    font-size: 24px;
-    font-weight: bold;
+    box-sizing: border-box;
 }
 
-.file-search label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
+.file-search-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 25vw; /* 35% da viewport */
+    height: 100%;
+    overflow-y: auto;
+    background-color: var(--color-bg-dark-alt);
+    border-radius: 8px;
+    padding: 16px;
+    box-sizing: border-box;
+    min-width: 300px; /* opcional para evitar largura muito pequena */
 }
 
-.file-search select {
-    padding: 8px 12px;
-    font-size: 16px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.collection-select-wrapper {
     margin-bottom: 16px;
-    outline: none;
-    width: 100%;
-    max-width: 300px;
 }
 
-.file-search .compact-file-grid {
-    margin-top: 16px;
+.file-search-sidebar .compact-file-grid {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.file-search-details {
+    width: 75vw; /* 65% da viewport */
+    height: 100%;
+    overflow-y: auto;
+    background-color: var(--color-bg-dark-alt);
+    border-radius: 8px;
+    padding: 24px;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgba(91, 99, 183, 0.3);
+}
+
+.dialog-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+
+.dialog-content {
+    background: var(--color-bg-dark-alt);
+    border-radius: 8px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    z-index: 1001;
+    color: var(--color-text-light);
+}
+
+.dialog-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.dialog-description {
+    margin-bottom: 24px;
+}
+
+.dialog-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.dialog-buttons button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: var(--color-primary);
+    color: white;
+}
+
+.dialog-buttons button:last-child {
+    background: #444;
 }

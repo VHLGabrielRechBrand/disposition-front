@@ -1,84 +1,106 @@
 import './FileSearch.css'
 import React, { useEffect, useState } from 'react'
+import CustomSelect from '../ui/CustomSelect.jsx'
 import CompactFileGrid from './CompactFileGrid.jsx'
 import useCollections from '../../hooks/useCollections.js'
 import useDocuments from '../../hooks/useDocuments.js'
-import { deleteDocument, tagDocument } from '../../service/FileService.js';
+import { deleteDocument, tagDocument } from '../../service/FileService.js'
 import { formatCollectionName } from '../../utils/utils.js'
-import FileDetails from "./FileDetails.jsx";
+import FileDetails from "./FileDetails.jsx"
+import * as Dialog from '@radix-ui/react-dialog'
 
 export default function FileSearch() {
     const { collections, selectedCollection, setSelectedCollection } = useCollections()
     const docs = useDocuments(selectedCollection)
     const [documents, setDocuments] = useState([])
     const [selectedFile, setSelectedFile] = useState(null)
+    const [confirmingDelete, setConfirmingDelete] = useState(null)
 
     useEffect(() => {
         setDocuments(docs)
     }, [docs])
 
     useEffect(() => {
-        setSelectedFile(null);
-    }, [selectedCollection]);
+        setSelectedFile(null)
+    }, [selectedCollection])
 
     const handleTag = (file) => {
-        const tag = prompt(`Enter a tag for "${file.name}"`);
+        const tag = prompt(`Enter a tag for "${file.name}"`)
         if (tag && tag.trim()) {
             tagDocument(selectedCollection, file.id, tag.trim())
-                .then(() => {
-                    console.log(`Tag "${tag}" added to ${file.name}`);
-                })
-                .catch((err) => {
-                    console.error(`Error tagging file ${file.name}:`, err);
-                });
+                .then(() => console.log(`Tag "${tag}" added to ${file.name}`))
+                .catch((err) => console.error(`Error tagging file ${file.name}:`, err))
         }
-    };
+    }
 
     const handleClick = (file) => {
         setSelectedFile(file)
     }
 
-    const handleRemove = (fileToRemove) => {
-        const updatedDocuments = documents.filter(doc => doc.id !== fileToRemove.id)
+    const handleRemove = () => {
+        if (!confirmingDelete) return
+
+        const updatedDocuments = documents.filter(doc => doc.id !== confirmingDelete.id)
         setDocuments(updatedDocuments)
 
-        deleteDocument(selectedCollection, fileToRemove.id)
-            .then(() => {
-                console.log(`File ${fileToRemove.name} removed successfully`)
-            })
-            .catch(err => {
-                console.error(`Error removing file ${fileToRemove.name}:`, err)
-            })
+        deleteDocument(selectedCollection, confirmingDelete.id)
+            .then(() => console.log(`File ${confirmingDelete.name} removed successfully`))
+            .catch(err => console.error(`Error removing file ${confirmingDelete.name}:`, err))
+
+        setConfirmingDelete(null)
     }
+
+    const collectionOptions = collections.map(name => ({
+        value: name,
+        label: formatCollectionName(name),
+    }))
+
+    const selectedOption = collectionOptions.find(opt => opt.value === selectedCollection)
 
     return (
         <div className="file-search">
-            <h1>Search</h1>
-            <select
-                id="collection-select"
-                value={selectedCollection}
-                onChange={e => setSelectedCollection(e.target.value)}>
-                {collections.length > 0 ? (
-                    collections.map(name => (
-                        <option key={name} value={name}>
-                            {formatCollectionName(name)} {}
-                        </option>
-                    ))
-                ) : (
-                    <option disabled>No collections available</option>
-                )}
-            </select>
+            <div className="file-search-sidebar">
+                <div className="collection-select-wrapper">
+                    <CustomSelect
+                        options={collectionOptions}
+                        value={selectedOption}
+                        onChange={(option) => setSelectedCollection(option.value)}
+                        placeholder="Select a collection"
+                        isSearchable
+                    />
+                </div>
 
-            {selectedFile ? (
-                <FileDetails collection={selectedCollection} id={selectedFile.id} />
-            ) : (
                 <CompactFileGrid
                     documents={documents}
                     onAccess={handleClick}
-                    onRemove={handleRemove}
+                    onRemove={(file) => setConfirmingDelete(file)}
                     onTag={handleTag}
                 />
+            </div>
+
+            {selectedFile && (
+                <div className="file-search-details">
+                    <FileDetails collection={selectedCollection} id={selectedFile.id} />
+                </div>
             )}
+
+            <Dialog.Root open={!!confirmingDelete} onOpenChange={(open) => !open && setConfirmingDelete(null)}>
+                <Dialog.Portal>
+                    <Dialog.Overlay className="dialog-overlay" />
+                    <Dialog.Content className="dialog-content">
+                        <Dialog.Title className="dialog-title">Confirm deletion</Dialog.Title>
+                        <Dialog.Description className="dialog-description">
+                            Are you sure you want to delete <strong>{confirmingDelete?.name}</strong>?
+                        </Dialog.Description>
+                        <div className="dialog-buttons">
+                            <button onClick={handleRemove}>Yes, delete</button>
+                            <Dialog.Close asChild>
+                                <button>Cancel</button>
+                            </Dialog.Close>
+                        </div>
+                    </Dialog.Content>
+                </Dialog.Portal>
+            </Dialog.Root>
         </div>
     )
 }

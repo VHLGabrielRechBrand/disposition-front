@@ -1,11 +1,21 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --color-bg-dark: #1e1e20;
+  --color-bg-dark-alt: #2a2a2d;
+  --color-bg-light: #ffffff;
+  --color-primary: #5b63b7;
+  --color-secondary: #9296f0;
+  --color-accent: #cbccff;
+  --color-neutral: #000000;
+  --color-text-light: rgba(255, 255, 255, 0.87);
+  --color-text-dark: #213547;
+
   line-height: 1.5;
   font-weight: 400;
+  font-family: "Liter", sans-serif;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--color-text-light);
+  background-color: var(--color-bg-dark);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,11 +25,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--color-primary);
 }
 
 body {
@@ -41,14 +51,15 @@ button {
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #2a2a2d;
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
-  border-color: #646cff;
+  border-color: var(--color-primary);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -56,11 +67,11 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-light);
   }
   a:hover {
-    color: #747bff;
+    color: var(--color-secondary);
   }
   button {
     background-color: #f9f9f9;
@@ -72,4 +83,11 @@ html, body, #root {
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
 }

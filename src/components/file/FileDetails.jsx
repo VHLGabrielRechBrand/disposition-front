@@ -59,7 +59,7 @@ export default function FileDetails({ collection, id }) {
     const { fields, raw_text, filename, size, extension } = file;
 
     return (
-        <div className="container">
+        <div >
             <div className="info-block">
                 <div className="section-title">File Info</div>
                 <div><span className="field-label">Name:</span> <span className="field-value">{filename}</span></div>

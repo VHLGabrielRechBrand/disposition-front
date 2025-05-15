@@ -1,7 +1,7 @@
-// src/pages/LoginPage.jsx
 import React from 'react';
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from '../hooks/useAuth.jsx';
+import './LoginPage.css';
 
 export default function LoginPage() {
     const { login } = useAuth();
@@ -26,7 +26,7 @@ export default function LoginPage() {
 
     return (
         <div className="login-page">
-            <img src="../../public/disposition.png" alt="Logo" style={{ width: 200, height: 200 }} />
+            <img src="/disposition.png" alt="Logo" style={{ width: 200, height: 200 }} />
             <div id="google-signin-button"></div>
         </div>
     );
