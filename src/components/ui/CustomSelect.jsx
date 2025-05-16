@@ -28,6 +28,23 @@ const customStyles = {
         color: 'white',
         cursor: 'pointer',
     }),
+    multiValue: (base) => ({
+        ...base,
+        backgroundColor: '#2a2a2a',
+        borderRadius: '4px',
+    }),
+    multiValueLabel: (base) => ({
+        ...base,
+        color: 'white',
+    }),
+    multiValueRemove: (base) => ({
+        ...base,
+        color: '#aaa',
+        ':hover': {
+            backgroundColor: '#444',
+            color: 'white',
+        },
+    }),
     singleValue: (base) => ({
         ...base,
         color: 'white',
@@ -40,7 +57,7 @@ const customStyles = {
         ...base,
         color: '#aaa',
     }),
-}
+};
 
 export default function CustomSelect({ label, id, ...props }) {
     return (

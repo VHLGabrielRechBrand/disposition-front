@@ -104,3 +104,7 @@ select {
   border-bottom: 1px solid var(--color-accent);
   padding-bottom: 0.25rem;
 }
+
+.mt-2 {
+  margin-top: 2px;
+}

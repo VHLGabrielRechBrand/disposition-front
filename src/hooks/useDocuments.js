@@ -21,7 +21,8 @@ export default function useDocuments(selectedCollection) {
                         ? doc.size
                         : typeof doc.sizeBytes === 'number'
                             ? doc.sizeBytes
-                            : 0
+                            : 0,
+                    tags: Array.isArray(doc.tags) ? doc.tags : [],
                 }))
                 setDocuments(normalized)
             })

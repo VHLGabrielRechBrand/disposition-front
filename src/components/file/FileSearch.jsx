@@ -4,7 +4,7 @@ import CustomSelect from '../ui/CustomSelect.jsx';
 import CompactFileGrid from './CompactFileGrid.jsx';
 import useCollections from '../../hooks/useCollections.js';
 import useDocuments from '../../hooks/useDocuments.js';
-import { deleteDocument, tagDocument } from '../../service/FileService.js';
+import { deleteDocument, tagDocument, listAllTags } from '../../service/FileService.js';
 import { formatCollectionName } from '../../utils/utils.js';
 import FileDetails from "./FileDetails.jsx";
 import * as Dialog from '@radix-ui/react-dialog';
@@ -16,6 +16,8 @@ export default function FileSearch() {
     const [documents, setDocuments] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [confirmingDelete, setConfirmingDelete] = useState(null);
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [tagOptions, setTagOptions] = useState([]);
 
     useEffect(() => {
         setDocuments(docs);
@@ -23,7 +25,28 @@ export default function FileSearch() {
 
     useEffect(() => {
         setSelectedFile(null);
+        setSelectedTags([]);
     }, [selectedCollection]);
+
+    useEffect(() => {
+        listAllTags()
+            .then(data => {
+                if (data?.tags) {
+                    setTagOptions(data.tags.map(tag => ({ value: tag, label: tag })));
+                }
+            })
+            .catch(() => {
+                toast.error("Failed to load tags");
+            });
+    }, [selectedCollection]);
+
+    const filteredDocuments = selectedTags.length
+        ? documents.filter(doc =>
+            selectedTags.every(tag =>
+                (doc.tags || []).includes(tag.value)
+            )
+        )
+        : documents;
 
     const handleTag = (file) => {
         const tag = prompt(`Enter a tag for "${file.name}"`);
@@ -32,15 +55,13 @@ export default function FileSearch() {
                 .then(() => {
                     toast.success(`Tag "${tag}" added to "${file.name}"`);
                 })
-                .catch((err) => {
+                .catch(() => {
                     toast.error(`Failed to tag "${file.name}"`);
                 });
         }
     };
 
-    const handleClick = (file) => {
-        setSelectedFile(file);
-    };
+    const handleClick = (file) => setSelectedFile(file);
 
     const handleRemove = () => {
         if (!confirmingDelete) return;
@@ -52,7 +73,7 @@ export default function FileSearch() {
             .then(() => {
                 toast.success(`File "${confirmingDelete.name}" removed`);
             })
-            .catch(err => {
+            .catch(() => {
                 toast.error(`Failed to remove "${confirmingDelete.name}"`);
                 setDocuments(prev => [...prev, confirmingDelete]);
             });
@@ -70,18 +91,26 @@ export default function FileSearch() {
     return (
         <div className="file-search">
             <div className="file-search-sidebar">
-                <div className="collection-select-wrapper">
-                    <CustomSelect
-                        options={collectionOptions}
-                        value={selectedOption}
-                        onChange={(option) => setSelectedCollection(option.value)}
-                        placeholder="Select a collection"
-                        isSearchable
-                    />
-                </div>
+                <CustomSelect
+                    options={collectionOptions}
+                    value={selectedOption}
+                    onChange={(option) => setSelectedCollection(option.value)}
+                    placeholder="Select a collection"
+                    isSearchable
+                />
+
+                <CustomSelect
+                    className="mt-2"
+                    isMulti
+                    options={tagOptions}
+                    value={selectedTags}
+                    onChange={setSelectedTags}
+                    placeholder="Filter by tags..."
+                />
 
                 <CompactFileGrid
-                    documents={documents}
+                    className="mt-2"
+                    documents={filteredDocuments}
                     onAccess={handleClick}
                     onRemove={(file) => setConfirmingDelete(file)}
                     onTag={handleTag}

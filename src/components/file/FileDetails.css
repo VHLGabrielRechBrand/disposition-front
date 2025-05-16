@@ -36,6 +36,16 @@
 }
 
 .settings-message {
-    margin-top: 1rem;
+    margin-top: 2px;
     color: var(--color-accent);
+}
+
+.tag-item {
+    display: inline-block;
+    background-color: #333;
+    color: white;
+    padding: 4px 8px;
+    margin: 2px;
+    border-radius: 12px;
+    font-size: 0.85rem;
 }

@@ -19,7 +19,6 @@ export default function FileDetails({ collection, id }) {
                     <div className="field-label">{key}:</div>
                     <ul className="field-value">
                         {value.map((item, index) => (
-                            // Se o item for objeto, renderize JSON como string (exemplo simples)
                             <li key={index}>
                                 {typeof item === 'object' ? JSON.stringify(item, null, 2) : item}
                             </li>
@@ -28,7 +27,6 @@ export default function FileDetails({ collection, id }) {
                 </div>
             );
         } else if (typeof value === 'object' && value !== null) {
-            // Se for objeto, renderiza suas chaves e valores recursivamente
             return (
                 <div key={key} className="info-block nested-object">
                     <div className="field-label">{key}:</div>
@@ -67,6 +65,18 @@ export default function FileDetails({ collection, id }) {
                 <div><span className="field-label">Extension:</span> <span className="field-value">{extension}</span></div>
                 <div><span className="field-label">Scanned At:</span> <span className="field-value">{new Date(file.scanned_at).toLocaleString()}</span></div>
             </div>
+
+            {file.tags && file.tags.length > 0 && (
+                <div className="info-block">
+                    <div className="section-title">Tags</div>
+
+                    {file.tags.map((tag, idx) => (
+                        <li key={idx} className="tag-item">
+                            {tag}
+                        </li>
+                    ))}
+                </div>
+            )}
 
             <div className="info-block">
                 <div className="section-title">Extracted Fields</div>

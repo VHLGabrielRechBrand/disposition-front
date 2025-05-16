@@ -47,6 +47,14 @@ export function deleteDocument(collectionName, documentId) {
 }
 
 /**
+ * List all tags via GET /tags
+ * @returns {Promise<{ tags: string[] }>}
+ */
+export function listAllTags() {
+    return apiFetch('/tags');
+}
+
+/**
  * Adds a tag to a document in the specified collection
  * @param {string} collection
  * @param {string} documentId
