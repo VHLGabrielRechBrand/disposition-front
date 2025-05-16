@@ -1,61 +1,71 @@
-import './FileSearch.css'
-import React, { useEffect, useState } from 'react'
-import CustomSelect from '../ui/CustomSelect.jsx'
-import CompactFileGrid from './CompactFileGrid.jsx'
-import useCollections from '../../hooks/useCollections.js'
-import useDocuments from '../../hooks/useDocuments.js'
-import { deleteDocument, tagDocument } from '../../service/FileService.js'
-import { formatCollectionName } from '../../utils/utils.js'
-import FileDetails from "./FileDetails.jsx"
-import * as Dialog from '@radix-ui/react-dialog'
+import './FileSearch.css';
+import React, { useEffect, useState } from 'react';
+import CustomSelect from '../ui/CustomSelect.jsx';
+import CompactFileGrid from './CompactFileGrid.jsx';
+import useCollections from '../../hooks/useCollections.js';
+import useDocuments from '../../hooks/useDocuments.js';
+import { deleteDocument, tagDocument } from '../../service/FileService.js';
+import { formatCollectionName } from '../../utils/utils.js';
+import FileDetails from "./FileDetails.jsx";
+import * as Dialog from '@radix-ui/react-dialog';
+import { toast } from 'sonner';
 
 export default function FileSearch() {
-    const { collections, selectedCollection, setSelectedCollection } = useCollections()
-    const docs = useDocuments(selectedCollection)
-    const [documents, setDocuments] = useState([])
-    const [selectedFile, setSelectedFile] = useState(null)
-    const [confirmingDelete, setConfirmingDelete] = useState(null)
+    const { collections, selectedCollection, setSelectedCollection } = useCollections();
+    const docs = useDocuments(selectedCollection);
+    const [documents, setDocuments] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [confirmingDelete, setConfirmingDelete] = useState(null);
 
     useEffect(() => {
-        setDocuments(docs)
-    }, [docs])
+        setDocuments(docs);
+    }, [docs]);
 
     useEffect(() => {
-        setSelectedFile(null)
-    }, [selectedCollection])
+        setSelectedFile(null);
+    }, [selectedCollection]);
 
     const handleTag = (file) => {
-        const tag = prompt(`Enter a tag for "${file.name}"`)
+        const tag = prompt(`Enter a tag for "${file.name}"`);
         if (tag && tag.trim()) {
             tagDocument(selectedCollection, file.id, tag.trim())
-                .then(() => console.log(`Tag "${tag}" added to ${file.name}`))
-                .catch((err) => console.error(`Error tagging file ${file.name}:`, err))
+                .then(() => {
+                    toast.success(`Tag "${tag}" added to "${file.name}"`);
+                })
+                .catch((err) => {
+                    toast.error(`Failed to tag "${file.name}"`);
+                });
         }
-    }
+    };
 
     const handleClick = (file) => {
-        setSelectedFile(file)
-    }
+        setSelectedFile(file);
+    };
 
     const handleRemove = () => {
-        if (!confirmingDelete) return
+        if (!confirmingDelete) return;
 
-        const updatedDocuments = documents.filter(doc => doc.id !== confirmingDelete.id)
-        setDocuments(updatedDocuments)
+        const updatedDocuments = documents.filter(doc => doc.id !== confirmingDelete.id);
+        setDocuments(updatedDocuments);
 
         deleteDocument(selectedCollection, confirmingDelete.id)
-            .then(() => console.log(`File ${confirmingDelete.name} removed successfully`))
-            .catch(err => console.error(`Error removing file ${confirmingDelete.name}:`, err))
+            .then(() => {
+                toast.success(`File "${confirmingDelete.name}" removed`);
+            })
+            .catch(err => {
+                toast.error(`Failed to remove "${confirmingDelete.name}"`);
+                setDocuments(prev => [...prev, confirmingDelete]);
+            });
 
-        setConfirmingDelete(null)
-    }
+        setConfirmingDelete(null);
+    };
 
     const collectionOptions = collections.map(name => ({
         value: name,
         label: formatCollectionName(name),
-    }))
+    }));
 
-    const selectedOption = collectionOptions.find(opt => opt.value === selectedCollection)
+    const selectedOption = collectionOptions.find(opt => opt.value === selectedCollection);
 
     return (
         <div className="file-search">
@@ -102,5 +112,5 @@ export default function FileSearch() {
                 </Dialog.Portal>
             </Dialog.Root>
         </div>
-    )
+    );
 }

@@ -3,12 +3,12 @@
     align-items: center;
     padding: 4px 8px;
     border: 1px solid var(--color-accent);
+    border-radius: var(--border-radius);
     margin-bottom: 4px;
     justify-content: space-between;
     transition: all 0.2s ease;
     background-color: var(--color-bg-dark);
     color: var(--color-text-light);
-    border-radius: 6px;
 }
 
 .compact-file__info {
@@ -49,7 +49,7 @@
     transform: scale(1.03);
     border-color: var(--color-primary);
     cursor: pointer;
-    background-color: #2a2a3a;
+    background-color: var(--color-primary);
 }
 
 .buttons {
@@ -73,6 +73,6 @@
 }
 
 .buttons button:disabled {
-    color: #77777788;
+    color: var(--color-bg-dark-alt);
     cursor: not-allowed;
 }

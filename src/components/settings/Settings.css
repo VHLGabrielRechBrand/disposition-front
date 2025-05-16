@@ -1,0 +1,50 @@
+.settings-page {
+    display: flex;
+    flex-direction: row;
+    padding: 24px 24px 24px;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    width: 100vw;
+    height: calc(100vh - 80px);
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px 24px 24px;
+    width: 35vw;
+    min-width: 300px;
+    height: calc(100vh - 80px);
+    color: var(--color-text-light);
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    margin: 0;
+}
+
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+}
+
+.settings-button {
+    padding: 12px 20px;
+    color: var(--color-bg-light);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+}
+
+.settings-button:hover:not(:disabled) {
+    background-color: var(--color-secondary);
+}
+
+.settings-button:disabled {
+    cursor: not-allowed;
+}

@@ -42,6 +42,27 @@ const customStyles = {
     }),
 }
 
-export default function CustomSelect(props) {
-    return <Select styles={customStyles} {...props} />
+export default function CustomSelect({ label, id, ...props }) {
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {label && (
+                <label
+                    htmlFor={id}
+                    style={{
+                        color: 'white',
+                        fontWeight: '600',
+                        fontSize: '0.9rem',
+                        userSelect: 'none',
+                    }}
+                >
+                    {label}
+                </label>
+            )}
+            <Select
+                inputId={id}
+                styles={customStyles}
+                {...props}
+            />
+        </div>
+    )
 }

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getAvailableModels, setOpenAIModel } from "../../service/ConfigurationService";
 import { useAuth } from "../../hooks/useAuth.jsx";
+import CustomSelect from "../ui/CustomSelect";
+import { toast } from 'sonner';
+import "./Settings.css";
 
 export default function Settings() {
     const { user } = useAuth();
@@ -9,7 +12,6 @@ export default function Settings() {
     const [selectedModel, setSelectedModel] = useState("");
     const [loadingModels, setLoadingModels] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [message, setMessage] = useState(null);
 
     useEffect(() => {
         getAvailableModels()
@@ -17,62 +19,60 @@ export default function Settings() {
                 setModels(models);
                 setSelectedModel(models[0] || "");
             })
-            .catch((err) => setMessage(`Error loading models: ${err.message}`))
+            .catch((err) => toast.error(`Error loading models: ${err.message}`))
             .finally(() => setLoadingModels(false));
     }, []);
 
     const handleSave = async () => {
         if (!selectedModel) {
-            setMessage("Please select a model before saving.");
+            toast.warning("Please select a model before saving.");
             return;
         }
         if (!userId) {
-            setMessage("User not authenticated.");
+            toast.error("User not authenticated.");
             return;
         }
         setSaving(true);
-        setMessage(null);
 
         try {
             await setOpenAIModel(userId, selectedModel);
-            setMessage("Model saved successfully!");
+            toast.success("Model saved successfully!");
         } catch (err) {
-            setMessage(`Error saving model: ${err.message}`);
+            toast.error(`Error saving model: ${err.message}`);
         } finally {
             setSaving(false);
         }
     };
 
     if (loadingModels) {
-        return <div>Loading models...</div>;
+        return <div className="settings-container">Loading models...</div>;
     }
 
+    const modelOptions = models.map((model) => ({
+        value: model,
+        label: model,
+    }));
+
+    const selectedOption = modelOptions.find((opt) => opt.value === selectedModel) || null;
+
     return (
-        <div style={{ maxWidth: 400, margin: "auto", padding: 20, border: "1px solid #ccc", borderRadius: 8 }}>
-            <h2>Settings</h2>
+        <div className="settings-page">
+            <div className="settings-container">
+                <CustomSelect
+                    id="model-select"
+                    label="OpenAI Model"
+                    options={modelOptions}
+                    value={selectedOption}
+                    onChange={(option) => setSelectedModel(option.value)}
+                    placeholder="Select a model"
+                    isSearchable
+                    isDisabled={saving}
+                />
 
-            <label htmlFor="model-select" style={{ display: "block", marginBottom: 8 }}>
-                Select OpenAI Model:
-            </label>
-            <select
-                id="model-select"
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                disabled={saving}
-                style={{ width: "100%", padding: 8, marginBottom: 12 }}
-            >
-                {models.map((model) => (
-                    <option key={model} value={model}>
-                        {model}
-                    </option>
-                ))}
-            </select>
-
-            <button onClick={handleSave} disabled={saving} style={{ padding: "8px 16px" }}>
-                {saving ? "Saving..." : "Save"}
-            </button>
-
-            {message && <div style={{ marginTop: 12 }}>{message}</div>}
+                <button onClick={handleSave} disabled={saving} className="settings-button">
+                    {saving ? "Saving..." : "Save"}
+                </button>
+            </div>
         </div>
     );
 }

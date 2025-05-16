@@ -1,16 +1,17 @@
 import React from 'react';
 import { authenticateWithGoogle } from '../../service/AuthService.js';
+import { toast } from 'sonner';
 
 export default function GoogleLoginButton({ onSuccess }) {
     const handleLogin = (response) => {
         const token = response.credential;
         authenticateWithGoogle(token)
             .then(data => {
-                console.log('Authenticated user:', data.user);
+                toast.success('Authentication successful');
                 onSuccess(data.user);
             })
             .catch(err => {
-                console.error('Authentication failed:', err);
+                toast.error('Authentication failed: ' + err.message);
             });
     };
 

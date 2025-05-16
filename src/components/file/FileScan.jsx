@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { scanFile } from '../../service/FileService.js'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { darcula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import './FileScan.css'
 
 export default function FileScan() {
@@ -68,27 +70,36 @@ export default function FileScan() {
         >
             {dragActive && <div className="drag-overlay">📁 Drop file here to scan</div>}
 
-            <input type="file" onChange={handleFileChange} />
+            <div className="scan-container">
+                <div className="upload-prompt">
+                    <input type="file" onChange={handleFileChange} />
 
-            <textarea
-                placeholder="Enter the prompt to guide the OCR/AI extraction..."
-                value={prompt}
-                onChange={handlePromptChange}
-                rows={4}
-                style={{ resize: 'vertical', marginTop: '8px', padding: '8px' }}
-            />
+                    <textarea
+                        placeholder="Enter the prompt to guide the OCR/AI extraction..."
+                        value={prompt}
+                        onChange={handlePromptChange}
+                        rows={4}
+                        style={{ resize: 'vertical', marginTop: '8px', padding: '8px' }}
+                    />
 
-            <button onClick={handleScan} disabled={!file || loading}>
-                {loading ? 'Scanning...' : 'Scan File'}
-            </button>
+                    <button onClick={handleScan} disabled={!file || loading}>
+                        {loading ? 'Scanning...' : 'Scan File'}
+                    </button>
 
-            {error && <p className="error">Error: {error}</p>}
-            {scanResult && (
-                <div className="scan-result">
-                    <h2>Scan Result:</h2>
-                    <pre>{JSON.stringify(scanResult, null, 2)}</pre>
+                    {error && <p className="error">Error: {error}</p>}
                 </div>
-            )}
+
+                <div className="scan-result">
+                    {scanResult && (
+                        <>
+                            <h2>Scan Result:</h2>
+                            <SyntaxHighlighter language="json" style={darcula} wrapLongLines={true}>
+                                {JSON.stringify(scanResult, null, 2)}
+                            </SyntaxHighlighter>
+                        </>
+                    )}
+                </div>
+            </div>
         </div>
     )
 }

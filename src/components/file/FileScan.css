@@ -1,6 +1,5 @@
 .file-scan {
     position: relative;
-    flex: 1;
     margin: 16px;
     padding: 16px;
     box-sizing: border-box;
@@ -10,33 +9,33 @@
     overflow: auto;
     border: 2px dashed transparent;
     transition: border 0.3s ease;
+
+    min-height: 75vh;
 }
 
-.file-scan button {
+.file-scan button input {
     padding: 12px 18px;
     cursor: pointer;
-    background-color: var(--color-primary); /* #5b63b7 */
+    background-color: var(--color-primary);
     border: none;
     font-size: 16px;
     color: var(--color-bg-light);
-    border-radius: 6px;
     transition: background-color 0.3s ease;
 }
 
 .file-scan button:hover:not(:disabled) {
-    background-color: var(--color-secondary); /* #9296f0 */
+    background-color: var(--color-secondary);
 }
 
 .file-scan button:disabled {
-    background-color: #ccc;
+    background-color: var(--color-bg-light);
     cursor: not-allowed;
-    color: #666;
+    color: var(--color-bg-dark-alt);
 }
 
 .file-scan input {
     padding: 10px;
-    border: 1px solid var(--color-accent); /* #cbccff */
-    border-radius: 4px;
+    border: 1px solid var(--color-accent);
     font-size: 1rem;
     color: var(--color-text-dark);
     background-color: var(--color-bg-light);
@@ -49,20 +48,9 @@
 }
 
 .file-scan .error {
-    color: #ff6b6b; /* leve vermelho para erro, mais suave */
+    color: var(--color-error);
     font-size: 14px;
     font-weight: 600;
-}
-
-.file-scan .scan-result {
-    padding: 16px;
-    overflow-x: auto;
-    max-height: 300px;
-    white-space: pre-wrap;
-    border: 1px solid var(--color-accent);
-    border-radius: 6px;
-    background-color: #f7f8ff; /* fundo lilás muito suave */
-    color: var(--color-text-dark);
 }
 
 .file-scan.drag-active {
@@ -75,7 +63,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(91, 99, 183, 0.1); /* transparente do primary */
+    background-color: rgba(91, 99, 183, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,4 +72,38 @@
     font-weight: bold;
     pointer-events: none;
     z-index: 10;
+}
+
+.scan-result {
+    flex: 1 1 75%;
+    padding: 16px;
+    overflow-x: auto;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    border: 1px solid var(--color-accent);
+    background-color: var(--color-bg-dark-alt);
+    color: var(--color-bg-light);
+}
+
+.scan-container {
+    display: flex;
+    gap: 16px;
+    flex-grow: 1;
+    height: auto;
+    align-items: stretch;
+}
+
+.upload-prompt {
+    flex: 0 0 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-prompt input,
+.upload-prompt textarea,
+.upload-prompt button {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    flex-shrink: 0;
 }

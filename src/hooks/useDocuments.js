@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { listDocuments } from '../service/FileService.js'
+import { toast } from 'sonner';
 
 export default function useDocuments(selectedCollection) {
     const [documents, setDocuments] = useState([])
@@ -24,9 +25,9 @@ export default function useDocuments(selectedCollection) {
                 }))
                 setDocuments(normalized)
             })
-            .catch(err => console.error(
-                `Error listing documents from ${selectedCollection}:`, err
-            ))
+            .catch(err => {
+                toast.error('Error while fetching documents: ' + err.message)
+            })
     }, [selectedCollection])
 
     return documents

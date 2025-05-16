@@ -1,27 +1,25 @@
 .file-search {
     display: flex;
-    gap: 24px;
-    padding: 80px 24px 24px 24px;
-    /* removendo max-width para ocupar toda a tela */
+    padding: 24px;
     width: 100vw;
     height: calc(100vh - 80px);
     color: var(--color-text-light);
-    /* removendo margin auto para não centralizar */
     margin: 0;
     box-sizing: border-box;
+    gap: 24px;
 }
 
 .file-search-sidebar {
     display: flex;
     flex-direction: column;
-    width: 25vw; /* 35% da viewport */
+    width: 25vw;
+    min-width: 300px;
     height: 100%;
     overflow-y: auto;
     background-color: var(--color-bg-dark-alt);
-    border-radius: 8px;
     padding: 16px;
     box-sizing: border-box;
-    min-width: 300px; /* opcional para evitar largura muito pequena */
+    border-radius: 8px;
 }
 
 .collection-select-wrapper {
@@ -34,14 +32,13 @@
 }
 
 .file-search-details {
-    width: 75vw; /* 65% da viewport */
+    flex: 1;
     height: 100%;
     overflow-y: auto;
     background-color: var(--color-bg-dark-alt);
-    border-radius: 8px;
     padding: 24px;
     box-sizing: border-box;
-    box-shadow: 0 0 10px rgba(91, 99, 183, 0.3);
+    border-radius: 8px;
 }
 
 .dialog-overlay {
@@ -53,7 +50,6 @@
 
 .dialog-content {
     background: var(--color-bg-dark-alt);
-    border-radius: 8px;
     padding: 24px;
     width: 90%;
     max-width: 400px;
@@ -84,13 +80,13 @@
 
 .dialog-buttons button {
     padding: 8px 16px;
-    border-radius: 6px;
     border: none;
+    border-radius: var(--border-radius);
     cursor: pointer;
     background: var(--color-primary);
     color: white;
 }
 
 .dialog-buttons button:last-child {
-    background: #444;
+    background: var(--color-bg-dark-alt);
 }
