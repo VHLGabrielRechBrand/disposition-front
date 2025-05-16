@@ -37,8 +37,8 @@
     padding: 10px;
     border: 1px solid var(--color-accent);
     font-size: 1rem;
-    color: var(--color-text-dark);
-    background-color: var(--color-bg-light);
+    color: var(--color-bg-light);
+    background-color: var(--color-bg-dark-alt);
     transition: border-color 0.3s ease;
 }
 
